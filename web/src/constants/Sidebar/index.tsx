@@ -1,5 +1,5 @@
 import { FaUser } from 'react-icons/fa';
-import { SiGoogleanalytics } from 'react-icons/Si';
+import { SiGoogleanalytics } from 'react-icons/si';
 import { BsGraphUp } from 'react-icons/bs';
 import React from 'react';
 
