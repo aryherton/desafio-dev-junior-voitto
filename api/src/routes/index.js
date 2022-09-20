@@ -1,9 +1,12 @@
 import { Router } from 'express';
 
-import AlunosController from '../app/controllers/AlunoController';
+import Alunos from './Alunos';
+import Cursos from './Cursos';
 
 const routes = new Router();
 
-routes.get('/alunos', AlunosController.index);
+routes
+  .use('/alunos', Alunos)
+  .use('/cursos', Cursos);
 
 export default routes;
