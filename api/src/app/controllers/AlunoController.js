@@ -1,9 +1,14 @@
-import Aluno from '../models/Aluno';
+import AlunoService from '../services/AlunoServices';
 
 class AlunoController {
-  async index(req, res) {
-    const alunos = await Aluno.findAll()
-    res.json(alunos);
+  async findAll(_req, res) {
+    try {
+      const alunos = await AlunoService.findAll()
+      res.status(200).json(alunos);
+    } catch (error) {
+      console.log(error.message);
+      res.status(500).json({ error: 'Erro ao listar alunos' });
+    }
   }
 
   async read(req, res) {
@@ -11,15 +16,35 @@ class AlunoController {
   }
 
   async create(req, res) {
-    // TODO
+    try {
+      const aluno = await AlunoService.created(req.body);
+      return res.status(200).json(aluno);
+    } catch (error) {
+      console.log(error.message);
+      res.status(500).json({ error: 'Erro ao cadastrar aluno' });
+    }
   }
 
   async update(req, res) {
-    // TODO
+    try {
+      const aluno = await AlunoService.update(req.body);
+      return res.status(200).json(aluno);
+    }
+    catch (error) {
+      console.log(error.message);
+      res.status(500).json({ error: 'Erro ao atualizar aluno' });
+    }
   }
 
   async delete(req, res) {
-    // TODO
+    try {
+      await AlunoService.delete(req.params);
+      return res.status(204).end();
+    }
+    catch (error) {
+      console.log(error.message);
+      res.status(500).json({ error: 'Erro ao deletar aluno' });
+    }
   }
 }
 
