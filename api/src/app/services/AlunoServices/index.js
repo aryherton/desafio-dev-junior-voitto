@@ -1,4 +1,5 @@
 import Aluno from '../../models/Aluno';
+import Curso from '../../models/Curso';
 
 class AlunoServices {
   static async created(obj_aluno) {
@@ -9,6 +10,31 @@ class AlunoServices {
 
   static async findAll() {
     const alunos = await Aluno.findAll();
+    return alunos;
+  }
+
+  static async findByIdAluno(id) {
+    const cursos = await Aluno.findAll({
+      where: {
+        id
+      },
+      include: [
+        { model: Curso, as: 'curso', attributes: ['id', 'nome'] }
+      ]
+    });
+
+    return cursos;
+  }
+
+  static async findAlunoAndAllCurso() {
+    const alunos = await Aluno.findAll({
+      include: [
+        {
+          model: Curso, as: 'curso', attributes: ['id', 'nome'],
+        },
+      ]
+    });
+
     return alunos;
   }
 
