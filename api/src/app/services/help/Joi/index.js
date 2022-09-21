@@ -20,4 +20,29 @@ export default class Joi {
     
     return schema;
   }
+
+  static validRegistAluno(obj_aluno) {
+    const schema = joi.object({
+      nome: joi.string().required(),
+      email: joi.string().email().required(),
+      cep: joi.string().required(),
+      cidade: joi.string().required(),
+      estado: joi.string().required(),
+    }).validate(obj_aluno).error;
+    
+    return schema;
+  }
+
+  static validUpdateAluno(obj_aluno) {
+    const schema = joi.object({
+      id: joi.number().required(),
+      nome: joi.string().required(),
+      email: joi.string().email().required(),
+      cep: joi.string().required(),
+      cidade: joi.string().required(),
+      estado: joi.string().required(),
+    }).validate(obj_aluno).error;
+    
+    return schema;
+  }
 }

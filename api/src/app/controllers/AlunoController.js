@@ -47,9 +47,7 @@ class AlunoController {
   }
 
   async create(req, res) {
-    const {
-      authorization
-    } = req.headers;
+    const { authorization } = req.headers;
 
     if (!authorization) {
       return res.status(401)
@@ -67,9 +65,7 @@ class AlunoController {
         });
     }
 
-    const {
-      admin
-    } = await UserServices.findUserByEmail(checkToken.email);
+    const { admin } = await UserServices.findUserByEmail(checkToken.email);
 
     if (!admin) {
       return res.status(401)
@@ -88,9 +84,7 @@ class AlunoController {
   }
 
   async update(req, res) {
-    const {
-      authorization
-    } = req.headers;
+    const { authorization } = req.headers;
 
     if (!authorization) {
       return res.status(401)
@@ -107,10 +101,8 @@ class AlunoController {
           error: 'Token inválido'
         });
     }
-
-    const {
-      admin
-    } = await UserServices.findUserByEmail(checkToken.email);
+    
+    const { admin } = await UserServices.findUserByEmail(checkToken.email);
 
     if (!admin) {
       return res.status(401)
