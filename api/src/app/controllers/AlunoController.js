@@ -1,13 +1,44 @@
 import AlunoService from '../services/AlunoServices';
+import UserServices from '../services/UserServices';
+import Jwt from '../services/help/jwt';
 
 class AlunoController {
-  async findAll(_req, res) {
+  async findAll(req, res) {
+    const { authorization } = req.headers;
+    
+    if (!authorization) {
+      return res.status(401)
+        .json({
+          error: 'Token não enviado'
+        });
+    }
+    
+    const checkToken = Jwt.verifyToken(authorization);
+    
+    if (!checkToken) {
+      return res.status(401)
+        .json({
+          error: 'Token inválido'
+        });
+    }
+
+    const { admin } = await UserServices.findUserByEmail(checkToken.email);
+
+    if (!admin) {
+      return res.status(401)
+        .json({
+          error: 'Usuário não autorizado'
+        });
+    }
+    
     try {
       const alunos = await AlunoService.findAll()
       res.status(200).json(alunos);
     } catch (error) {
       console.log(error.message);
-      res.status(500).json({ error: 'Erro ao listar alunos' });
+      res.status(500).json({
+        error: 'Erro ao listar alunos'
+      });
     }
   }
 
@@ -16,6 +47,37 @@ class AlunoController {
   }
 
   async create(req, res) {
+    const {
+      authorization
+    } = req.headers;
+
+    if (!authorization) {
+      return res.status(401)
+        .json({
+          error: 'Token não enviado'
+        });
+    }
+
+    const checkToken = Jwt.verifyToken(authorization);
+
+    if (!checkToken) {
+      return res.status(401)
+        .json({
+          error: 'Token inválido'
+        });
+    }
+
+    const {
+      admin
+    } = await UserServices.findUserByEmail(checkToken.email);
+
+    if (!admin) {
+      return res.status(401)
+        .json({
+          error: 'Usuário não autorizado'
+        });
+    }
+
     try {
       const aluno = await AlunoService.created(req.body);
       return res.status(200).json(aluno);
@@ -26,6 +88,37 @@ class AlunoController {
   }
 
   async update(req, res) {
+    const {
+      authorization
+    } = req.headers;
+
+    if (!authorization) {
+      return res.status(401)
+        .json({
+          error: 'Token não enviado'
+        });
+    }
+
+    const checkToken = Jwt.verifyToken(authorization);
+
+    if (!checkToken) {
+      return res.status(401)
+        .json({
+          error: 'Token inválido'
+        });
+    }
+
+    const {
+      admin
+    } = await UserServices.findUserByEmail(checkToken.email);
+
+    if (!admin) {
+      return res.status(401)
+        .json({
+          error: 'Usuário não autorizado'
+        });
+    }
+
     try {
       const aluno = await AlunoService.update(req.body);
       return res.status(200).json(aluno);
@@ -37,6 +130,37 @@ class AlunoController {
   }
 
   async delete(req, res) {
+    const {
+      authorization
+    } = req.headers;
+
+    if (!authorization) {
+      return res.status(401)
+        .json({
+          error: 'Token não enviado'
+        });
+    }
+
+    const checkToken = Jwt.verifyToken(authorization);
+
+    if (!checkToken) {
+      return res.status(401)
+        .json({
+          error: 'Token inválido'
+        });
+    }
+
+    const {
+      admin
+    } = await UserServices.findUserByEmail(checkToken.email);
+
+    if (!admin) {
+      return res.status(401)
+        .json({
+          error: 'Usuário não autorizado'
+        });
+    }
+    
     try {
       await AlunoService.delete(req.params);
       return res.status(204).end();
