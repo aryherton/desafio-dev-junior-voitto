@@ -42,8 +42,30 @@ class AlunoController {
     }
   }
 
-  async read(req, res) {
-    // TODO
+  async findByIdAluno(req, res) {
+    const { authorization } = req.headers;
+    const { id } = req.params;
+
+    if (!authorization) {
+      return res.status(401)
+        .json({
+          error: 'Token não enviado'
+        });
+    }
+
+    const checkToken = Jwt.verifyToken(authorization);
+
+    if (!checkToken) {
+      return res.status(401)
+        .json({
+          error: 'Token inválido'
+        });
+    }
+
+    try {
+      const alunos = await AlunoService.findByIdAluno(id);
+      return res.status(200).json(alunos);
+    } catch (error) {}
   }
 
   async create(req, res) {
