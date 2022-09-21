@@ -1,4 +1,5 @@
 import Curso from '../../models/Curso';
+import Aluno from '../../models/Aluno';
 
 class CursoServices {
   static async created(obj_curso) {
@@ -9,6 +10,20 @@ class CursoServices {
   
   static async findAll() {
     const cursos = await Curso.findAll();
+    return cursos;
+  }
+
+  static async findByIdCurso(id) {
+    const cursos = await Curso.findAll({
+      where: {
+        id
+      },
+      include: [{
+        model: Aluno,
+        as: 'aluno'
+      }]
+    });
+
     return cursos;
   }
   
