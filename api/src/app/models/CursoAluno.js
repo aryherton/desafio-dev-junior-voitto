@@ -8,8 +8,24 @@ class CursoAluno extends Model {
     }, {
       sequelize,
       timestamps: false,
-      tableName: 'curso_aluno'
+      tableName: 'curso_pessoa'
     });
+
+    this.associate = (models) => {
+      models.Aluno.belongsToMany(models.Curso, {
+        foreignKey: 'id_pessoa',
+        as: 'curso',
+        through: CursoAluno,
+        otherKey: 'id_curso'
+      });
+
+      models.Curso.belongsToMany(models.Aluno, {
+        foreignKey: 'id_curso',
+        as: 'aluno',
+        through: CursoAluno,
+        otherKey: 'id_pessoa'
+      });
+    }
 
     return this;
   }

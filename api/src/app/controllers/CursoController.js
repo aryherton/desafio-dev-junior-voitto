@@ -41,8 +41,30 @@ class CursoController {
     }
   }
   
-  async read(req, res) {
-    // TODO
+  async findByIdCurso(req, res) {
+    const { authorization } = req.headers;
+    const { id } = req.params;
+
+    if (!authorization) {
+      return res.status(401)
+        .json({
+          error: 'Token não enviado'
+        });
+    }
+
+    const checkToken = Jwt.verifyToken(authorization);
+
+    if (!checkToken) {
+      return res.status(401)
+        .json({
+          error: 'Token inválido'
+        });
+    }
+
+    try {
+      const curso = await CursoService.findByIdCurso(id);
+      return res.status(200).json(curso);
+    } catch (error) {}
   }
   
   async create(req, res) {

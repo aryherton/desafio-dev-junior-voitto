@@ -6,6 +6,7 @@ import ValidAluno from '../middlewares/ValidAluno';
 const routes = new Router();
 
 routes
+  .get('/:id', AlunosController.findByIdAluno)
   .get('/', AlunosController.findAll)
   .post('/', ValidAluno.validRegistAluno, AlunosController.create)
   .delete('/:id', AlunosController.delete)
