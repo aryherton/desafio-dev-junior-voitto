@@ -27,6 +27,14 @@ USE `voitto_desafio`;
 
 -- --------------------------------------------------------
 
+CREATE TABLE `user` (
+  `id` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  `nome` varchar(180) NOT NULL,
+  `email` varchar(250) NOT NULL,
+  `senha` varchar(350) NOT NULL,
+  `admin` tinyint(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 --
 -- Estrutura para tabela `aluno`
 --
