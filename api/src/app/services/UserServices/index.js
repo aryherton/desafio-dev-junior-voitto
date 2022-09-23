@@ -40,7 +40,14 @@ class UserServices {
 
       if (checkPswd) {
         const token = Token.generateToken({ email: user.email, user: user.senha });
-        return token;
+        
+        return {
+          id: user.id,
+          nome: user.nome,
+          email: user.email,
+          admin: user.admin,
+          token
+        };
       }
     }
   }
