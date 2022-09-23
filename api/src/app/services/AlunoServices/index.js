@@ -9,7 +9,11 @@ class AlunoServices {
   }
 
   static async findAll() {
-    const alunos = await Aluno.findAll();
+    const alunos = await Aluno.findAll({
+      include: [
+        { model: Curso, as: 'curso', attributes: ['id', 'nome'] }
+      ]
+    });
     return alunos;
   }
 
