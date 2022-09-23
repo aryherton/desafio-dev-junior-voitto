@@ -36,7 +36,6 @@ class UserServices {
     
     if (user) {
       const checkPswd = await bcrypt.compare(pswd, user.senha);
-      console.log(checkPswd);
 
       if (checkPswd) {
         const token = Token.generateToken({ email: user.email, user: user.senha });

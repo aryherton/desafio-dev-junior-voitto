@@ -6,10 +6,11 @@ import ValidUser from '../middlewares/ValidUser';
 const routes = new Router();
 
 routes
-  .get('/', UserController.findAll)
+  .get('/', ValidUser.validUserAdmin, UserController.findAll)
+  .get('/bytoken', ValidUser.validToken, UserController.findByToken)
   .post('/', ValidUser.validUserRegister, UserController.create)
   .post('/login', ValidUser.validUserLogin, UserController.login)
-  .delete('/:id', UserController.delete)
-  .put('/', UserController.update);
+  .delete('/:id', ValidUser.validUserAdmin, UserController.delete)
+  .put('/', ValidUser.validUserAdmin, UserController.update);
 
 export default routes;

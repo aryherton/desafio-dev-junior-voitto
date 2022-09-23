@@ -4,32 +4,6 @@ import Jwt from '../services/help/jwt';
 
 class CursoController {
   async findAll(req, res) {
-    const { authorization } = req.headers;
-    
-    if (!authorization) {
-      return res.status(401)
-      .json({
-        error: 'Token não enviado'
-      });
-    }
-    
-    const checkToken = Jwt.verifyToken(authorization);
-    
-    if (!checkToken) {
-      return res.status(401)
-      .json({
-        error: 'Token inválido'
-      });
-    }
-    
-    const { admin } = await UserServices.findUserByEmail(checkToken.email);
-    
-    if (!admin) {
-      return res.status(401)
-      .json({
-        error: 'Usuário não autorizado'
-      });
-    }
     try {
       const cursos = await CursoService.findAll()
       res.status(200).json(cursos);
@@ -42,59 +16,13 @@ class CursoController {
   }
   
   async findByIdCurso(req, res) {
-    const { authorization } = req.headers;
-    const { id } = req.params;
-
-    if (!authorization) {
-      return res.status(401)
-        .json({
-          error: 'Token não enviado'
-        });
-    }
-
-    const checkToken = Jwt.verifyToken(authorization);
-
-    if (!checkToken) {
-      return res.status(401)
-        .json({
-          error: 'Token inválido'
-        });
-    }
-
     try {
-      const curso = await CursoService.findByIdCurso(id);
+      const curso = await CursoService.findByIdCurso(req.params);
       return res.status(200).json(curso);
     } catch (error) {}
   }
   
   async create(req, res) {
-    const { authorization } = req.headers;
-    
-    if (!authorization) {
-      return res.status(401)
-      .json({
-        error: 'Token não enviado'
-      });
-    }
-    
-    const checkToken = Jwt.verifyToken(authorization);
-    
-    if (!checkToken) {
-      return res.status(401)
-      .json({
-        error: 'Token inválido'
-      });
-    }
-    
-    const { admin } = await UserServices.findUserByEmail(checkToken.email);
-    
-    if (!admin) {
-      return res.status(401)
-      .json({
-        error: 'Usuário não autorizado'
-      });
-    }
-    
     try {
       const cursos = await CursoService.created(req.body);
       return res.status(200).json(cursos);
@@ -107,33 +35,6 @@ class CursoController {
   }
   
   async update(req, res) {
-    const { authorization } = req.headers;
-    
-    if (!authorization) {
-      return res.status(401)
-      .json({
-        error: 'Token não enviado'
-      });
-    }
-    
-    const checkToken = Jwt.verifyToken(authorization);
-    
-    if (!checkToken) {
-      return res.status(401)
-      .json({
-        error: 'Token inválido'
-      });
-    }
-    
-    const { admin } = await UserServices.findUserByEmail(checkToken.email);
-    
-    if (!admin) {
-      return res.status(401)
-      .json({
-        error: 'Usuário não autorizado'
-      });
-    }
-    
     try {
       const cursos = await CursoService.update(req.body);
       return res.status(200).json(cursos);
@@ -146,33 +47,6 @@ class CursoController {
   }
   
   async delete(req, res) {
-    const { authorization } = req.headers;
-    
-    if (!authorization) {
-      return res.status(401)
-      .json({
-        error: 'Token não enviado'
-      });
-    }
-    
-    const checkToken = Jwt.verifyToken(authorization);
-    
-    if (!checkToken) {
-      return res.status(401)
-      .json({
-        error: 'Token inválido'
-      });
-    }
-    
-    const { admin } = await UserServices.findUserByEmail(checkToken.email);
-    
-    if (!admin) {
-      return res.status(401)
-      .json({
-        error: 'Usuário não autorizado'
-      });
-    }
-    
     try {
       await CursoService.delete(req.params);
       return res.status(204).end();

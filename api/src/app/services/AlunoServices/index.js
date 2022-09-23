@@ -18,25 +18,13 @@ class AlunoServices {
   }
 
   static async findByIdAluno(id) {
-    const cursos = await Aluno.findAll({
-      where: {
-        id
-      },
-      include: [
-        { model: Curso, as: 'curso', attributes: ['id', 'nome'] }
-      ]
-    });
-
-    return cursos;
-  }
-
-  static async findAlunoAndAllCurso() {
     const alunos = await Aluno.findAll({
-      include: [
-        {
-          model: Curso, as: 'curso', attributes: ['id', 'nome'],
-        },
-      ]
+      where: { id },
+      include: [{
+        model: Curso,
+        as: 'curso',
+        attributes: ['id', 'nome'],
+      }, ]
     });
 
     return alunos;
