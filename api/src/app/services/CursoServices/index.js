@@ -9,7 +9,9 @@ class CursoServices {
   }
   
   static async findAll() {
-    const cursos = await Curso.findAll();
+    const cursos = await Curso.findAll({
+      include: [{ model: Aluno, as: 'aluno'}]
+    });
     return cursos;
   }
 
