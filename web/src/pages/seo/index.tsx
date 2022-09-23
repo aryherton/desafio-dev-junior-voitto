@@ -1,23 +1,35 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import PostsOfBlog from '@/components/Organisms/PostsOfBlog';
 import Dashboard from '@/components/Templates/Layouts/Dashboard';
 import Modal from '@/components/Modal';
 import LoginForm from '@/components/Organisms/Forms/LoginForm';
+import { getUserByToken } from '@/services/api';
+import { changeUser } from '../../redux/slice/userSlice';
 
 const SEOPage: React.FC = () => {
+  const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const user = useSelector<IUser>((state: any) => state.user);
+  const user = useSelector<IUser>((state: any) => state.user.user);
 
   useEffect(() => {
-    const token = JSON.parse(localStorage.getItem('token'));
-    
-    if (!token) {
+    const keyToken = localStorage.getItem('token');
+
+    if (!keyToken) {
       setIsModalOpen(true);
     } else {
       setIsModalOpen(false);
-    }    
+    }
+
+    if (keyToken && !user) {
+      const { token } = keyToken && JSON.parse(keyToken);
+      (async () => {
+        const user = await getUserByToken('/users/bytoken', token);
+        
+        dispatch(changeUser(user));
+      })();
+    }
   }, [user]);
 
   return (

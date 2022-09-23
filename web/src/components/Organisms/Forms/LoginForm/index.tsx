@@ -32,10 +32,12 @@ const LoginForm: React.FC = () => {
             progress: undefined
           });
         } else {
-          const user = await loginGetToken('users', { email, senha });
+          const user = await loginGetToken('/users/login', { email, senha });
           
-          localStorage.setItem('token', JSON.stringify({ token: user.token }));
-          dispatch(changeUser(user));
+          if (user.token) {
+            localStorage.setItem('token', JSON.stringify({ token: user.token }));
+            dispatch(changeUser(user));
+          }
         }
         break;
       case 'Cadastre-se':

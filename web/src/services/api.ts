@@ -9,10 +9,10 @@ const api = axios.create({
 
 export const loginGetToken = async (endPoint: string, body: IUser): Promise<string> => {
   try {
-    const token = await api.post(endPoint, body)
-      .then((response) => response.data.token);
+    const user = await api.post(endPoint, body)
+      .then((response) => response.data);
 
-    return token;
+    return user;
   } catch (error) {
     return error.response.status;
   }
@@ -28,6 +28,18 @@ export const registerUser = async (endPoint: string, body: IUser): Promise<strin
     return error;
   }
 };
+
+export const getUserByToken = async (endPoint: string, token: string): Promise<string> => {
+  try {
+    api.defaults.headers.common['Authorization'] = token;
+    const user = await api.get(endPoint)
+      .then((response) => response.data);
+
+    return user;
+  } catch (error) {
+    return error;
+  }
+}
 
 // export const setTasks = async (endPoint: string, body: ITasks, token: string) => {
 //   try {
