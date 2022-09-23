@@ -23,7 +23,7 @@ export const Container = styled.div`
     margin-left: 3rem;
 
     > * {
-      margin-top: 1rem;
+      margin-top: 0;
     }
 
     > header {

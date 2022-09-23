@@ -34,6 +34,8 @@ export default createGlobalStyle`
     --color-primary-dark: #03045e;
     --color-secondary: #0096c7;
     --color-secondary-dark: #0077b6;
+    --color-tertiary: #770d59;
+    --color-tertiary-dark: #af2689;
   }
 
   @font-face {

@@ -11,7 +11,7 @@ import {
   Separator
 } from './styles';
 
-import { api } from '@/services/api';
+// import { GetUsers } from '@/services/api';
 import { toast } from 'react-toastify';
 import useWindowSize from '@/hooks/useWindowSize';
 import { Button } from '@material-ui/core';
@@ -21,25 +21,25 @@ const StudentTable: React.FC = () => {
   const [students, setStudents] = useState<Student[]>([]);
   const mobile = useWindowSize().width < 900;
 
-  useEffect(() => {
-    api
-      .get('alunos')
-      .then(res => {
-        setStudents(res.data);
-      })
-      .catch(() => {
-        toast('Confira a API', {
-          position: toast.POSITION.BOTTOM_CENTER,
-          type: 'error',
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined
-        });
-      });
-  }, []);
+  // useEffect(() => {
+  //   api
+  //     .get('alunos')
+  //     .then(res => {
+  //       setStudents(res.data);
+  //     })
+  //     .catch(() => {
+  //       toast('Confira a API', {
+  //         position: toast.POSITION.BOTTOM_CENTER,
+  //         type: 'error',
+  //         autoClose: 2000,
+  //         hideProgressBar: false,
+  //         closeOnClick: true,
+  //         pauseOnHover: true,
+  //         draggable: true,
+  //         progress: undefined
+  //       });
+  //     });
+  // }, []);
 
   const openCreateStudentModal = (): void => {
     alert('Abrir modal de criação de aluno');
