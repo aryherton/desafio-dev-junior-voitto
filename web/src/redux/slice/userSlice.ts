@@ -20,7 +20,7 @@ export const slice = createSlice({
 export const { changeUser } = slice.actions;
 export const { changeArrUsers } = slice.actions;
 
-export const selectUser = (state: { user: Student; }) => state.user;
-export const selectArrUsers = (state: { arrUsers: Student[]; }) => state.arrUsers;
+export const selectUser = (state: { user: IUser; }) => state.user;
+export const selectArrUsers = (state: { arrUsers: IUser[]; }) => state.arrUsers;
 
 export default slice.reducer;
