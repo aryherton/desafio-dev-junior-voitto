@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import {
   Container,
@@ -10,43 +11,37 @@ import {
   TableMobile,
   Separator
 } from './styles';
-
-// import { GetUsers } from '@/services/api';
 import { toast } from 'react-toastify';
 import useWindowSize from '@/hooks/useWindowSize';
 import { Button } from '@material-ui/core';
 import { buttonTheme } from '@/utils/Config';
+import { deleteAluno } from '@/services/api';
 
 const StudentTable: React.FC = () => {
-  const [students, setStudents] = useState<Student[]>([]);
+  const [students, setStudents] = useState<IStudent[]>([]);
   const mobile = useWindowSize().width < 900;
-
-  // useEffect(() => {
-  //   api
-  //     .get('alunos')
-  //     .then(res => {
-  //       setStudents(res.data);
-  //     })
-  //     .catch(() => {
-  //       toast('Confira a API', {
-  //         position: toast.POSITION.BOTTOM_CENTER,
-  //         type: 'error',
-  //         autoClose: 2000,
-  //         hideProgressBar: false,
-  //         closeOnClick: true,
-  //         pauseOnHover: true,
-  //         draggable: true,
-  //         progress: undefined
-  //       });
-  //     });
-  // }, []);
+  const arrStudent = useSelector<IStudent[]>((state: any) => {
+    return state.student.arrStudents;
+  }) as IStudent[];
+  const user = useSelector((state: any) => state.user.user);
+  console.log("user");
+  useEffect(() => setStudents(arrStudent), [arrStudent]);
 
   const openCreateStudentModal = (): void => {
     alert('Abrir modal de criação de aluno');
   };
 
-  const openDeleteStudentModal = (id: number): void => {
-    alert(`Abrir modal de criação de aluno ${id}`);
+  const deleteStudent = async (id: number) => {
+    if (user.admin) {
+      try {
+        const { token } = JSON.parse(localStorage.getItem('token'));
+        await deleteAluno(`/alunos/${id}`, token);
+        const newArrStudents = students.filter((student) => student.id !== id);
+        setStudents(newArrStudents);
+      } catch (error) {
+        toast.error('Erro ao deletar aluno!');
+      }
+    }
   };
 
   return (
@@ -90,7 +85,7 @@ const StudentTable: React.FC = () => {
                     </Item>
                     <Item>
                       <button
-                        onClick={() => openDeleteStudentModal(student.id)}
+                        onClick={() => deleteStudent(student.id)}
                       >
                         excluir
                       </button>
@@ -102,7 +97,7 @@ const StudentTable: React.FC = () => {
         ) : (
           <>
             {students &&
-              students.map((student, key) => (
+              students.map((student: IStudent, key: React.Key) => (
                 <TableMobile>
                   <Head>
                     <Item> ID </Item>
