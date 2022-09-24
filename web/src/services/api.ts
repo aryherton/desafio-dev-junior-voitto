@@ -41,74 +41,26 @@ export const getUserByToken = async (endPoint: string, token: string): Promise<s
   }
 }
 
-// export const setTasks = async (endPoint: string, body: ITasks, token: string) => {
-//   try {
-//     api.defaults.headers.common['Authorization'] = token;
-//     const data = await api.post(endPoint, body);
+export const getAlunos = async (endPoint: string, token: string) => {
+  try {
+    api.defaults.headers.common['Authorization'] = token;
+    const data = await api.get(endPoint)
+      .then((resp) => resp.data);
 
-//     return data;
-//   } catch (error) {
-//     return error.response.status;
-//   }
-// }
+    return data;
+  } catch (error) {
+      return error.response.status;
+  }
+}
 
-// export const getDatas = async (endPoint: string, token: string): Promise<IUser> => {
-//   try {
-//     api.defaults.headers.common['Authorization'] = token;
-//     const cartProduct = await api.get(endPoint)
-//       .then((resp) => resp.data);
-
-//     return cartProduct;
-//   } catch (error) {
-//     return error.response.status;
-//   }
-// }
-
-// export const getSortByDate = async (endPoint: string, body: IBodyByDate, token: string) => {
-//   const config: AxiosRequestConfig = {
-//     headers: {
-//       'Authorization': token,
-//       'Content-Type': 'application/json',
-//     },
-//     data: body,
-//   };
-//   try {
-//     const data = await api.post(endPoint, config)
-//       .then((resp) => resp.data);
-
-//     return data;
-//   } catch (error) {
-//       return error.response.status;
-//   }
-// }
-
-// export const putUpdateTask = async (endPoint: string, body: ITasks, token: string) => {
-//   try {
-//     api.defaults.headers.common['Authorization'] = token;
-//     const data = await api.put(endPoint, body)
-//       .then((resp) => resp.data);
-
-//     return data;
-//   } catch (error) {
-//       return error.response.status;
-//   }
-
-// }
-
-// export const delteTasks = async (endPoint: string, body: IArrIdDelete, token: string) => {
-//   const config: AxiosRequestConfig = {
-//     headers: {
-//         'Authorization': token,
-//         'Content-Type': 'application/json',
-//     },
-//     data: body,
-//   }
-//   try {
-//     await api.delete(endPoint, config);
-//   } catch (error) {
-//     return error.response.status;
-//   }
-// }
+export const deleteAluno = async (endPoint: string, token: string) => {
+  try {
+    api.defaults.headers.common['Authorization'] = token;
+    await api.delete(endPoint);
+  } catch (error) {
+    return error.response.status;
+  }
+}
 
 export default api
 
