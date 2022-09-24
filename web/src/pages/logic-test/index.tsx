@@ -30,7 +30,7 @@ const Operations: React.FC = () => {
         dispatch(changeUser(user));
       })();
     }
-  }, [user]);
+  }, []);
 
   return (
     <Dashboard
