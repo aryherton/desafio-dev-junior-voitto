@@ -7,6 +7,17 @@ const api = axios.create({
   },
 });
 
+const apiCep = axios.create({
+  baseURL: `https://viacep.com.br/ws/`
+});
+
+export const getCityAndStateByCep = async (cep: string) => {
+  const response = await apiCep.get(`${+cep}/json/`);
+  console.log(response.data);
+  
+  return response.data;
+}
+
 export const loginGetToken = async (endPoint: string, body: IUser): Promise<string> => {
   try {
     const user = await api.post(endPoint, body)

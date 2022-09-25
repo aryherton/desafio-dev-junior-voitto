@@ -11,6 +11,7 @@ import {
   createAluno,
   updateAluno,
   updateCursoAluno,
+  getCityAndStateByCep,
 } from '@/services/api';
 import { arrState } from '@/utils/help/arrState';
 import { FooterLoginForm } from '../LoginForm/styles';
@@ -30,17 +31,22 @@ const AddStudentForm: React.FC = () => {
   const editStudent = useSelector((state: any) => state.student.editStudent);
 
   const submit = async () => {
-    const checkStateStudent = nome && email && cep && city && state;
+    const checkStateStudent = nome && email && cep;
     const checkStateCourse = course;
     let newStudent: IStudent;
 
     if (checkStateStudent) {
+      if (cep.length < 8) {
+        alert('CEP inválido');
+        return;
+      }
+      const dataApiCep: any = await getCityAndStateByCep(cep);
       newStudent = {
         nome,
         email,
         cep,
-        cidade: city,
-        estado: state,
+        cidade: dataApiCep.localidade,
+        estado: dataApiCep.uf,
       };
     } else {
       alert('Preencha todos os campos!');
@@ -169,6 +175,7 @@ const AddStudentForm: React.FC = () => {
             variant={inputTheme}
             margin="dense"
             type="text"
+            InputProps={{ inputProps: { maxlength: 8, minlength: 8 } }}
             label={!cep && "Digite o cep"}
             style={{
               background: 'yellow',
@@ -178,44 +185,6 @@ const AddStudentForm: React.FC = () => {
               marginRight: '5px',
             }}
           />
-          <TextField
-            value={city}
-            onChange={({ target }) => setCity(target.value)}
-            variant={inputTheme}
-            margin="dense"
-            type="text"
-            label={!city && "Digite uma cidade" }
-            style={{
-              background: 'yellow',
-              border: 'none',
-              borderRadius: '10px',
-              height: '40px',
-              marginRight: '5px',
-            }}
-          />
-          <Select
-            value={state}
-            variant={inputTheme}
-            margin="dense"
-            label={!state && "Selecione um estado" }
-            style={{
-              background: 'yellow',
-              border: 'none',
-              borderRadius: '10px',
-              height: '40px',
-              marginRight: '5px',
-            }}
-          >
-            {arrState.map((item: string) => (
-              <MenuItem
-                key={ nanoid() }
-                value={item}
-                onClick={() => setState(item)}
-              >
-                {item}
-              </MenuItem>
-            )) }
-          </Select>
           <Select
             value={course}
             variant={inputTheme}
