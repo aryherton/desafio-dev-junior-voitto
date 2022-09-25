@@ -5,6 +5,7 @@ import StudentTable from '@/components/Organisms/Tables/StudentTable';
 import Dashboard from '@/components/Templates/Layouts/Dashboard';
 import Modal from '@/components/Modal';
 import LoginForm from '@/components/Organisms/Forms/LoginForm';
+import AddStudentForm from '@/components/Organisms/Forms/AddStudentForm';
 import { getUserByToken, getAlunos } from '@/services/api';
 import { changeUser } from '../../redux/slice/userSlice';
 import { changeArrStudents } from '../../redux/slice/studentSlice';
@@ -12,7 +13,8 @@ import { changeArrStudents } from '../../redux/slice/studentSlice';
 const Operations: React.FC = () => {
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const user = useSelector<IUser>((state: any) => state.user.user);  
+  const user = useSelector<IUser>((state: any) => state.user.user);
+  const addStudent = useSelector((state: any) => state.student.addStudent);
 
   useEffect(() => {
     const keyToken = localStorage.getItem('token');
@@ -29,7 +31,7 @@ const Operations: React.FC = () => {
         dispatch(changeUser(user));
       })();
     }
-  }, []);  
+  }, [addStudent]);  
   
   return (
     <Dashboard
@@ -41,6 +43,11 @@ const Operations: React.FC = () => {
       {isModalOpen && (
         <Modal>
           <LoginForm />
+        </Modal>
+      )}
+      {addStudent && (
+        <Modal>
+          <AddStudentForm />
         </Modal>
       )}
       <StudentTable />

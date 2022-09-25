@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { nanoid } from '@reduxjs/toolkit';
 
 import {
   Container,
@@ -16,21 +17,29 @@ import useWindowSize from '@/hooks/useWindowSize';
 import { Button } from '@material-ui/core';
 import { buttonTheme } from '@/utils/Config';
 import { deleteAluno } from '@/services/api';
+import { changeAddStudent, changeEditStudent } from '../../../../redux/slice/studentSlice';
 
 const StudentTable: React.FC = () => {
+  const dispatch = useDispatch();
   const [students, setStudents] = useState<IStudent[]>([]);
   const mobile = useWindowSize().width < 900;
   const arrStudent = useSelector<IStudent[]>((state: any) => {
     return state.student.arrStudents;
   }) as IStudent[];
   const user = useSelector((state: any) => state.user.user);
-  console.log("user");
-  useEffect(() => setStudents(arrStudent), [arrStudent]);
-
+  
+  
   const openCreateStudentModal = (): void => {
-    alert('Abrir modal de criação de aluno');
+    dispatch(changeAddStudent(true));
   };
-
+  
+  const editStud = async (idStudent: number) => {
+    const studentsEdit = arrStudent
+    .filter((student) => student.id === idStudent);
+    dispatch(changeEditStudent(studentsEdit[0]));
+    dispatch(changeAddStudent(true));
+  }
+  
   const deleteStudent = async (id: number) => {
     if (user.admin) {
       try {
@@ -43,6 +52,8 @@ const StudentTable: React.FC = () => {
       }
     }
   };
+
+  useEffect(() => setStudents(arrStudent), [arrStudent, user]);
 
   return (
     <Container>
@@ -81,11 +92,15 @@ const StudentTable: React.FC = () => {
                     <Item> {student.estado} </Item>
                     <Item> {student.cidade} </Item>
                     <Item>
-                      <button>editar</button>
+                      <button
+                        onClick={ () => editStud(student.id) }
+                      >
+                        editar
+                      </button>
                     </Item>
                     <Item>
                       <button
-                        onClick={() => deleteStudent(student.id)}
+                        onClick={ () => deleteStudent(student.id) }
                       >
                         excluir
                       </button>
@@ -97,42 +112,42 @@ const StudentTable: React.FC = () => {
         ) : (
           <>
             {students &&
-              students.map((student: IStudent, key: React.Key) => (
-                <TableMobile>
+              students.map((student: IStudent) => (
+                <TableMobile key={ nanoid() }>
                   <Head>
                     <Item> ID </Item>
                   </Head>
-                  <BodyLine key={key}>
+                  <BodyLine key={nanoid()}>
                     <Item> {student.id} </Item>
                   </BodyLine>
                   <Head>
                     <Item> Nome </Item>
                   </Head>
-                  <BodyLine key={key}>
+                  <BodyLine key={nanoid()}>
                     <Item> {student.nome} </Item>
                   </BodyLine>
                   <Head>
                     <Item> Email </Item>
                   </Head>
-                  <BodyLine key={key}>
+                  <BodyLine key={nanoid()}>
                     <Item> {student.email} </Item>
                   </BodyLine>
                   <Head>
                     <Item> Cep </Item>
                   </Head>
-                  <BodyLine key={key}>
+                  <BodyLine key={nanoid()}>
                     <Item> {student.cep} </Item>
                   </BodyLine>
                   <Head>
                     <Item> Estado</Item>
                   </Head>
-                  <BodyLine key={key}>
+                  <BodyLine key={nanoid()}>
                     <Item> {student.estado} </Item>
                   </BodyLine>
                   <Head>
                     <Item>Cidade </Item>
                   </Head>
-                  <BodyLine key={key}>
+                  <BodyLine key={nanoid()}>
                     <Item> {student.cidade} </Item>
                   </BodyLine>
                 </TableMobile>

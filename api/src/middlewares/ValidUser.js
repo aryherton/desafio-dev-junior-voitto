@@ -44,15 +44,14 @@ export default class ValidUser {
     if (!authorization) {
       return res.status(401).json({ error: 'Token não enviado' });
     }
-
     const checkToken = Jwt.verifyToken(authorization);
-
+    
     if (!checkToken) {
       return res.status(401).json({ error: 'Token inválido' });
     }
-
+    
     const user = await UserService.findUserByEmail(checkToken.email);
-
+    
     if (!user.admin) {
       return res.status(401).json({ error: 'Usuário não autorizado' });
     }

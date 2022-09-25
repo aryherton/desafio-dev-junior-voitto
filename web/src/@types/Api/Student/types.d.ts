@@ -1,9 +1,9 @@
 interface IStudent {
-  id: number;
+  id?: number;
   nome: string;
   email: string;
   cep: string;
   cidade: string;
   estado: string;
-  curso: ICourse[];
+  curso?: ICourse[];
 }

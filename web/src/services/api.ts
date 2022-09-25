@@ -27,7 +27,7 @@ export const registerUser = async (endPoint: string, body: IUser): Promise<strin
   } catch (error) {
     return error;
   }
-};
+}
 
 export const getUserByToken = async (endPoint: string, token: string): Promise<string> => {
   try {
@@ -53,6 +53,18 @@ export const getAlunos = async (endPoint: string, token: string) => {
   }
 }
 
+export const createAluno = async (endPoint: string, body: IStudent, token: string) => {
+  try {
+    api.defaults.headers.common['Authorization'] = token;
+    const data = await api.post(endPoint, body)
+      .then((resp) => resp.data);
+
+    return data;
+  } catch (error) {
+    return error.response.status;
+  }
+}
+
 export const deleteAluno = async (endPoint: string, token: string) => {
   try {
     api.defaults.headers.common['Authorization'] = token;
@@ -62,13 +74,56 @@ export const deleteAluno = async (endPoint: string, token: string) => {
   }
 }
 
-export default api
+export const updateAluno = async (endPoint: string, body: IStudent, token: string) => {
+  try {
+    api.defaults.headers.common['Authorization'] = token;
+    const data = await api.put(endPoint, body)
+      .then((resp) => resp.data);
+
+    return data;
+  } catch (error) {
+    return error.response.status;
+  }
+}
+
+export const getCursos = async (endPoint: string, token: string) => {
+  try {
+    api.defaults.headers.common['Authorization'] = token;
+    const data = await api.get(endPoint)
+      .then((resp) => resp.data);
+
+    return data;
+  } catch (error) {
+      return error.response.status;
+  }
+}
 
 
-// import axios from 'axios';
+export const createCursoAluno = async (
+  endPoint: string,
+  body: ICourseAluno,
+  token: string) => {
+  try {
+    api.defaults.headers.common['Authorization'] = token;
+    await api.post(endPoint, body);
+  } catch (error) {
+    return error.response.status;
+  }
+}
 
-// export const api = axios.create({
-//   baseURL: 'http://localhost:3333/'
-// });
+export const updateCursoAluno = async (
+  endPoint: string,
+  body: ICourseAluno[],
+  token: string) => {
+  try {
+    console.log('token');
+    api.defaults.headers.common['Authorization'] = token;
+    
+    await api.put(endPoint, body);
+  } catch (error) {
+    return error.response.status;
+  }
+}
 
-// export default api;
+
+export default api;
