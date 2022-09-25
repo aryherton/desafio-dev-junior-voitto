@@ -4,6 +4,7 @@ import AlunoServices from '../services/AlunoServices';
 class CursoAlunoController {
   async create(req, res) {
     try {
+      console.log( 'Body da Api >>>', req.body);
       await CursoAluno.execute(req.body);
       return res.status(200).end();
     } catch (error) {

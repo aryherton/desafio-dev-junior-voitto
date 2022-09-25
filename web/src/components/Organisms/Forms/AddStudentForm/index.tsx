@@ -40,7 +40,8 @@ const AddStudentForm: React.FC = () => {
         alert('CEP inválido');
         return;
       }
-      const dataApiCep: any = await getCityAndStateByCep(cep);
+      const dataApiCep = await getCityAndStateByCep(cep);
+      
       newStudent = {
         nome,
         email,
@@ -56,14 +57,16 @@ const AddStudentForm: React.FC = () => {
     
     if (checkStateStudent && checkStateCourse) {
       try {
+        console.log('newStudent>>>', newStudent);
         const data = await createAluno('/alunos', newStudent, token);
         const id = data.id;
 
         if (id) {
-          const newCourse: ICourseAluno = {
+          const newCourse: ICourseAluno[] = [{
             id_pessoa: +id,
             id_curso: +course,
-          }
+          }];
+
           await createCursoAluno('/cursoaluno', newCourse, token);
         }
         dispatch(changeAddStudent(false));
@@ -185,6 +188,16 @@ const AddStudentForm: React.FC = () => {
               marginRight: '5px',
             }}
           />
+          {editStudent && (
+            <>
+              <p>
+              {cep !== editStudent.cep ? ('') : (city)}
+              </p>
+              <p>
+                {cep !== editStudent.cep ? ('') : (state)}
+              </p>
+            </>
+          ) }
           <Select
             value={course}
             variant={inputTheme}

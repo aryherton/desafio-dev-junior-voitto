@@ -66,6 +66,7 @@ export const getAlunos = async (endPoint: string, token: string) => {
 
 export const createAluno = async (endPoint: string, body: IStudent, token: string) => {
   try {
+    console.log('web api >>>>', body);
     api.defaults.headers.common['Authorization'] = token;
     const data = await api.post(endPoint, body)
       .then((resp) => resp.data);
@@ -112,9 +113,10 @@ export const getCursos = async (endPoint: string, token: string) => {
 
 export const createCursoAluno = async (
   endPoint: string,
-  body: ICourseAluno,
+  body: ICourseAluno[],
   token: string) => {
   try {
+    console.log('web curos aluno >>>>', body);
     api.defaults.headers.common['Authorization'] = token;
     await api.post(endPoint, body);
   } catch (error) {
