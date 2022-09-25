@@ -1,0 +1,1000 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API(Desafio Desenvolvedor Júnior TI 2022/2 - Voitto)",
+    "description": "Criar uma aplicação que integre uma API REST com uma interface web, utilizando Node.js e Next.js.",
+    "contact": {
+      "name": "Voitto",
+      "Linkedin": "https://www.linkedin.com/in/aryherton/",
+      "Github": "https://github.com/aryherton",
+      "email": "aryhertonbarbosa@gmail.com"
+    }
+  },
+  "version": "1.0.0",
+  "servers": [
+    {
+      "url": "http://localhost:${port}",
+      "description": "Servidor local. Caso não tenha um arquivo .env, a porta padrão é 3333."
+    }
+  ],
+  "paths": {
+    "/users": {
+      "post": {
+        "summary": "Cadastro de usuário",
+        "description": "Cadastra um usuário no banco de dados.",
+        "tags": ["Users"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User-Register"
+              },
+              "example": {
+                "name": "Ary Barbosa",
+                "email": "aryhertonbarbosa@gmail.com",
+                "password": "12345678"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Usuário cadastrado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/User-Register-Response"
+                  },
+                  "example": {
+                    "id": "1",
+                    "name": "Ary Barbosa",
+                    "email": "aryhertonbarbosa@gmail.com",
+                    "token": "DeyJhbGciOiJIUzI1NNVL0NtUzI2anEiLCJpYXQiOjE2NjQxMTYwMTQsImV4cCI6MTY2NTQxMjAxNH0zT1E_cXIy5AlRm7hJX8WXrh3suUGsA7SHN6bYeSjto4iIsInR5cCI6IkpXVCJ9eyJlbWFpbCI6ImFyeWhlcnRvbkB0ZXN0LmNvbSIsInVzZXIiOiIkMmEkMTAkRmhYT2xxTjhzN2tILnpKWWxqTTl2dXE1aW5kb1RTQk02RjJXRnhEM2ZDV"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Listagem de usuários",
+        "description": "Lista todos os usuários cadastrados no banco de dados.",
+        "tags": ["Users"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Usuários listados com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/UserGETResponse"
+                  },
+                  "example": [
+                    {
+                      "id": "1",
+                      "name": "Ary Barbosa",
+                      "email": "aryhertonbarbosa@gmail.com",
+                      "admin": true
+                    },
+                    {
+                      "id": "2",
+                      "name": "Barbosa",
+                      "email": "barbosa@gmail.com",
+                      "admin": false
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }         
+      },
+      "put": {
+        "summary": "Atualização de usuário",
+        "description": "Atualiza um usuário no banco de dados.",
+        "tags": ["Users"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserPUTRequestBody"
+              },
+              "example": {
+                "id": 1,
+                "name": "Ary Barbosa",
+                "email": "aryhertonbarbosa@gmail.com",
+                "admin": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Usuário atualizado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/UserPUTResponse"
+                  },
+                  "example": {
+                    "id": "1",
+                    "name": "Ary Barbosa",
+                    "email": "aryhertonbarbosa@gmail.com",
+                    "admin": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      }  
+    },
+    "/users/bytoken": {
+      "get": {
+        "summary": "Listagem de usuário por token",
+        "description": "Lista um usuário cadastrado no banco de dados através do token.",
+        "tags": ["Users"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Usuário listado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/UserGETByTokenResponse"
+                  },
+                  "example": {
+                    "id": "1",
+                    "name": "Ary Barbosa",
+                    "email": "aryhertonbarbosa@gmail.com",
+                    "admin": true,
+                    "token": "DeyJhbGciOiJIUzI1NNVL0NtUzI2anEiLCJpYXQiOjE2NjQxMTYwMTQsImV4cCI6MTY2NTQxMjAxNH0zT1E_cXIy5AlRm7hJX8WXrh3suUGsA7SHN6bYeSjto4iIsInR5cCI6IkpXVCJ9eyJlbWFpbCI6ImFyeWhlcnRvbkB0ZXN0LmNvbSIsInVzZXIiOiIkMmEkMTAkRmhYT2xxTjhzN2tILnpKWWxqTTl2dXE1aW5kb1RTQk02RjJXRnhEM2ZDV"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "delete": {
+        "summary": "Deleção de usuário",
+        "description": "Deleta um usuário no banco de dados.",
+        "tags": ["Users"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do usuário",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": "204"
+      }
+    },
+    "/alunos": {
+      "post": {
+        "summary": "Cadastro de aluno",
+        "description": "Cadastra um aluno no banco de dados.",
+        "tags": ["Alunos"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlunosRegister"
+              },
+              "example": {
+                "name": "Isabella",
+                "email": "isabella@test.com",
+                "cpf": "12345678",
+                "cidade": "Teresina",
+                "estado": "PI"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Aluno cadastrado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/AlunosRegisterResponse"
+                  },
+                  "example": {
+                    "id": "1",
+                    "name": "Isabella",
+                    "email": "isabella@test.com",
+                    "cpf": "12345678",
+                    "cidade": "Teresina",
+                    "estado": "PI"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Listagem de alunos",
+        "description": "Lista todos os alunos cadastrados no banco de dados.",
+        "tags": ["Alunos"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Alunos listados com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/AlunoGetResponse"
+                  },
+                  "example": [
+                    {
+                      "id": "1",
+                      "name": "Isabella",
+                      "email": "isabella@test.com",
+                      "cpf": "12345678",
+                      "cidade": "Teresina",
+                      "estado": "PI",
+                      "curso": [
+                        {
+                          "id": "1",
+                          "name": "Curso 1",
+                          "CursoAluno":{
+                            "id_pessoa": 1,
+                            "id_curso": 2
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "2",
+                      "name": "Ary Barbosa",
+                      "email": "arybarbosa@test.com",
+                      "cpf": "12345678",
+                      "cidade": "Teresina",
+                      "estado": "PI",
+                      "curso": []
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualização de aluno",
+        "description": "Atualiza um aluno no banco de dados.",
+        "tags": ["Alunos"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlunosRegisterResponse"
+              },
+              "example": {
+                "id": "1",
+                "name": "Isabella",
+                "email": "isabella@test.com",
+                "cpf": "12345678",
+                "cidade": "Fortaleza",
+                "estado": "CE"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Aluno atualizado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/AlunosRegisterResponse"
+                  },
+                  "example": {
+                    "id": "1",
+                    "name": "Isabella",
+                    "email": "isabella@test.com",
+                    "cpf": "12345678",
+                    "cidade": "Fortaleza",
+                    "estado": "CE"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/alunos/{id}": {
+      "get": {
+        "summary": "Listagem de aluno",
+        "description": "Lista um aluno cadastrado no banco de dados.",
+        "tags": ["Alunos"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do aluno",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Aluno listado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/AlunoGetResponse"
+                  },
+                  "example": {
+                    "id": "1",
+                    "name": "Isabella",
+                    "email": "isabella@test.com",
+                    "cpf": "12345678",
+                    "cidade": "Teresina",
+                    "estado": "PI",
+                    "curso": [
+                      {
+                        "id": "1",
+                        "name": "Curso 1",
+                        "CursoAluno":{
+                          "id_pessoa": 1,
+                          "id_curso": 2
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletar aluno",
+        "description": "Deleta um aluno no banco de dados.",
+        "tags": ["Alunos"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do aluno",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": "204"
+      }
+    },
+    "/curso": {
+      "post": {
+        "summary": "Cadastro de curso",
+        "description": "Cadastra um curso no banco de dados.",
+        "tags": ["Cursos"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CursosRegisterResponse"
+              },
+              "example": {
+                "name": "Pacote Especialista Master Black Belt"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Curso cadastrado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/CursosRegisterResponse"
+                  },
+                  "example": {
+                    "id": 1,
+                    "name": "Pacote Especialista Master Black Belt"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Listar cursos",
+        "description": "Lista todos os cursos cadastrados no banco de dados.",
+        "tags": ["Cursos"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Cursos listados com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/CursosGetAllResponse"
+                  },
+                  "example": [
+                    {
+                      "id": 1,
+                      "nome": "Especialista Green Belt em Lean Seis Sigma",
+                      "aluno": [
+                        {
+                          "id": 1,
+                          "nome": "Ruan Xavier",
+                          "email": "ruandsxavier@gmail.com",
+                          "cep": "36037010",
+                          "cidade": "Juiz De Fora",
+                          "estado": "MG",
+                          "CursoAluno": {
+                            "id_pessoa": 1,
+                            "id_curso": 1
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": 2,
+                      "name": "Pacote Especialista Black Belt",
+                      "aluno": []
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualizar curso",
+        "description": "Atualiza um curso no banco de dados.",
+        "tags": ["Cursos"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CursosRegisterResponse"
+              },
+              "example": {
+                "id": "1",
+                "name": "Pacote Especialista Master Black Belt"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Curso atualizado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/CursosRegisterResponse"
+                  },
+                  "example": {
+                    "id": "1",
+                    "name": "Pacote Especialista Master Black Belt"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/curso/{id}": {
+      "get": {
+        "summary": "Listagem de curso",
+        "description": "Lista um curso cadastrado no banco de dados.",
+        "tags": ["Cursos"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do curso",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Curso listado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/CursosGetResponse"
+                  },
+                  "example": {
+                    "id": 1,
+                    "nome": "Especialista Green Belt em Lean Seis Sigma",
+                    "aluno": [{
+                      "id": 1,
+                      "nome": "Ruan Xavier",
+                      "email": "ruandsxavier@gmail.com",
+                      "cep": "36037010",
+                      "cidade": "Juiz De Fora",
+                      "estado": "MG",
+                      "CursoAluno": {
+                        "id_pessoa": 1,
+                        "id_curso": 1
+                      }
+                    }]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletar curso",
+        "description": "Deleta um curso no banco de dados.",
+        "tags": ["Cursos"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do curso",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": "204"
+      }
+    },
+    "/cursoaluno": {
+      "post": {
+        "summary": "Cadastro de curso aluno",
+        "description": "Cadastra um curso aluno no banco de dados.",
+        "tags": ["CursosAluno"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CursoAlunoRegisterBodyRequest"
+              },
+              "example": {
+                "id_pessoa": 1,
+                "id_curso": 1
+              }
+            }
+          }
+        },
+        "responses": "201"
+      },
+      "put": {
+        "summary": "Atualizar curso aluno",
+        "description": "Atualiza um curso aluno no banco de dados.",
+        "tags": ["CursosAluno"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CursoAlunoRegisterBodyRequest"
+              },
+              "example": {
+                "id_pessoa": 1,
+                "id_curso": 1
+              }
+            }
+          }
+        },
+        "responses": "200"
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "UserRegister": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string",
+            "description": "Nome do usuário"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email do usuário"
+          },
+          "senha": {
+            "type": "string",
+            "description": "Senha do usuário"
+          }
+        }
+      },
+      "UserRegisterResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "description": "Id do usuário"
+          },
+          "nome": {
+            "type": "string",
+            "description": "Nome do usuário"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email do usuário"
+          },
+          "token": {
+            "type": "string",
+            "description": "Token de autenticação"
+          }
+        }
+      },
+      "UserLogin": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "Email do usuário"
+          },
+          "senha": {
+            "type": "string",
+            "description": "Senha do usuário"
+          }
+        }
+      },
+      "UserLoginResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "description": "Id do usuário"
+          },
+          "nome": {
+            "type": "string",
+            "description": "Nome do usuário"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email do usuário"
+          },
+          "admin": {
+            "type": "boolean",
+            "description": "Se o usuário é administrador"
+          },
+          "token": {
+            "type": "string",
+            "description": "Token de autenticação"
+          }
+        }
+      },
+      "UserGETResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "number",
+              "description": "Id do usuário"
+            },
+            "nome": {
+              "type": "string",
+              "description": "Nome do usuário"
+            },
+            "email": {
+              "type": "string",
+              "description": "Email do usuário"
+            },
+            "admin": {
+              "type": "boolean",
+              "description": "Se o usuário é administrador"
+            }
+          }
+        }
+      },
+      "UserGETByTokenResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "description": "Id do usuário"
+          },
+          "nome": {
+            "type": "string",
+            "description": "Nome do usuário"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email do usuário"
+          },
+          "admin": {
+            "type": "boolean",
+            "description": "Se o usuário é administrador"
+          },
+          "token": {
+            "type": "string",
+            "description": "Token de autenticação"
+          }
+        }
+      },
+      "UserPUTRequestBody": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "description": "Id do usuário"
+          },
+          "nome": {
+            "type": "string",
+            "description": "Nome do usuário"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email do usuário"
+          },
+          "admin":{
+            "type": "boolean",
+            "description": "Se o usuário é administrador"
+          }
+        }
+      },
+      "UserPUTResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "description": "Id do usuário"
+          },
+          "nome": {
+            "type": "string",
+            "description": "Nome do usuário"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email do usuário"
+          },
+          "admin": {
+            "type": "boolean",
+            "description": "Se o usuário é administrador"
+          }
+        }
+      },
+      "AlunosRegister": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string",
+            "description": "Nome do aluno"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email do aluno"
+          },
+          "cpf": {
+            "type": "string",
+            "description": "CPF do aluno"
+          },
+          "cidade": {
+            "type": "string",
+            "description": "Cidade do aluno"
+          },
+          "estado": {
+            "type": "string",
+            "description": "Estado do aluno"
+          }
+        }
+      },
+      "AlunosRegisterResponse":{
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "description": "Id do aluno"
+          },
+          "nome": {
+            "type": "string",
+            "description": "Nome do aluno"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email do aluno"
+          },
+          "cpf": {
+            "type": "string",
+            "description": "CPF do aluno"
+          },
+          "cidade": {
+            "type": "string",
+            "description": "Cidade do aluno"
+          },
+          "estado": {
+            "type": "string",
+            "description": "Estado do aluno"
+          }
+        }
+      },
+      "AlunoGetResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "number",
+              "description": "Id do aluno"
+            },
+            "nome": {
+              "type": "string",
+              "description": "Nome do aluno"
+            },
+            "email": {
+              "type": "string",
+              "description": "Email do aluno"
+            },
+            "cpf": {
+              "type": "string",
+              "description": "CPF do aluno"
+            },
+            "cidade": {
+              "type": "string",
+              "description": "Cidade do aluno"
+            },
+            "estado": {
+              "type": "string",
+              "description": "Estado do aluno"
+            },
+            "curso": {
+              "types": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "description": "Id do curso"
+                  },
+                  "nome": {
+                    "type": "string",
+                    "description": "Nome do curso"
+                  },
+                  "CuroAluno": {
+                    "id_pessoa": {
+                      "type": "number",
+                      "description": "Id do aluno"
+                    },
+                    "id_curso": {
+                      "type": "number",
+                      "description": "Id do curso"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "CursosRegisterResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "description": "Id do curso"
+          },
+          "nome": {
+            "type": "string",
+            "description": "Nome do curso"
+          }
+        }
+      },
+      "CursosGetAllResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "number",
+              "description": "Id do curso"
+            },
+            "nome": {
+              "type": "string",
+              "description": "Nome do curso"
+            },
+            "aluno": [
+              {
+                "id": {
+                  "type": "number",
+                  "description": "Id do aluno"
+                },
+                "nome": {
+                  "type": "string",
+                  "description": "Nome do aluno"
+                },
+                "email": {
+                  "type": "string",
+                  "description": "Email do aluno"
+                },
+                "cpf": {
+                  "type": "string",
+                  "description": "CPF do aluno"
+                },
+                "cidade": {
+                  "type": "string",
+                  "description": "Cidade do aluno"
+                },
+                "estado": {
+                  "type": "string",
+                  "description": "Estado do aluno"
+                },
+                "CursoAluno": {
+                  "id_pessoa": {
+                    "type": "number",
+                    "description": "Id do aluno"
+                  },
+                  "id_curso": {
+                    "type": "number",
+                    "description": "Id do curso"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      "CursoAlunoRegisterBodyRequest": {
+        "type": "array",
+        "properties": {
+          "id_pessoa": {
+            "type": "number",
+            "description": "Id do aluno"
+          },
+          "id_curso": {
+            "type": "number",
+            "description": "Id do curso"
+          }
+        }
+      }
+    }
+  },
+  "securitySchemes": {
+    "bearerAuth": {
+      "type": "http",
+      "scheme": "bearer",
+      "bearerFormat": "JWT"
+    }
+  }
+}

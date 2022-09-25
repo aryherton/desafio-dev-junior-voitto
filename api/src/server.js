@@ -1,5 +1,9 @@
 import http from 'http';
 import Server from './app';
 
+import 'dotenv/config';
+
+const port = process.env.PORT || 3333;
+
 const server = http.Server(Server);
-server.listen(3333, () => console.log(`Server ouvindo a porta -> 3333`));
+server.listen(port, () => console.log(`Server ouvindo a porta -> ${port}`));
